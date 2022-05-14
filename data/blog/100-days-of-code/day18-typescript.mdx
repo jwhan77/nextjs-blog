@@ -1,0 +1,149 @@
+---
+title: '[Day 18] TypeScript - 명시적 타입 지정, any 타입, tsconfig'
+date: '2022-05-14'
+tags: ['100DaysOfCode', 'TypeScript']
+draft: false
+summary: '명시적 타입(Explicit Types), any 타입, tsconfig'
+---
+
+
+# Explicit Types
+
+어제는 타입스크립트에서 변수가 한 번 선언되면 타입스크립트가 타입을 추론(Type Inference)한다고 배웠다.
+
+```ts
+let x = 1; // x: number;
+```
+
+그렇다면 만약 선언할 때 값은 주지 않지만 타입을 지정하고 싶다면 어떻게 할까?
+
+```ts
+let x: number;
+let y: string;
+
+// arrays
+let numbers: number[];
+```
+
+이런식으로 타입을 명시적으로 지정할 수 있다.
+
+어제 배운 예제 중 여러 가지 타입을 갖는 array를 만들 수 있다고 했다.
+
+이 경우에는 아래와 같이 괄호()를 사용해서 타입을 명시하면 된다.
+
+```ts
+let mixed = (string|number)[] = [];
+```
+
+반드시 emtpy array를 선언할 필요는 없지만, 다음 코드에서 push 등 array 함수를 사용한다면 array를 선언하는 것을 권장한다.
+
+array가 아닌 일반 변수에서도 여러 가지 타입을 가질 수 있다. 이 경우에는 ()는 생략해도 된다.
+
+```ts
+let x = string|boolean;
+```
+
+object는 어떨까?
+
+```ts
+let person: object;
+person = { name: 'kim', age: 20 };
+```
+
+위와 같이 사용해도 되지만 이 경우 `person = [];`를 해도 타입스크립트는 오류를 잡아내지 못한다.  (자바스크립트에서 array의 type이 object기 때문이다. )
+
+그러므로 더욱 정확하게 하고 싶다면 아래와 같이 선언할 수 있겠다.
+
+```ts
+let person: {
+  name: string,
+  age: number
+};
+```
+
+
+# Any 타입
+
+간혹 타입을 동적으로 지정하고 싶을 수도 있다. 마치 자바스크립트처럼 말이다.
+
+그럴 때는 `any` 타입을 사용하면 된다.
+
+```ts
+let x: any;
+
+x = 1; // 가능
+x = true; // 가능
+x = 'hello'; // 가능
+```
+
+하지만 any 타입을 남발한다면 타입 에러를 잡아내지 못할테니 타입스크립트를 쓰는 이유가 없어질 것이다.
+
+
+# tsconfig.json
+
+우리는 앞에서 ts 파일을 js로 변환하기 위해서는 `tsc`를 사용할 수 있다고 배웠다.
+
+하지만 만약 ts 파일이 여러개라면 어떨까?
+
+하나하나 tsc를 사용해서 변환해주는 것은 비효율적일 것이다.
+
+그래서 우리는 `tsconfig.json` 을 사용할 수 있다.
+
+
+`tsconfig.json`이란 정확히 무엇일까?
+
+디렉토리에 `tsconfig.json` 파일이 있으면 디렉토리가 TypeScript 프로젝트의 루트임을 나타낸다.
+`tsconfig.json` 파일은 프로젝트를 컴파일하는 데 필요한 루트 파일 및 컴파일러 옵션을 지정한다.
+[출처 - TypeScript Docs - tsconfig.json](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
+
+`tsconfig.json` 파일을 만들고 싶다면 프로젝트 루트에서 아래 명령어를 실행하면 된다.
+
+```powershell
+tsc --init
+```
+
+그러면 루트 디렉토리에 tsconfig.json 파일이 생긴다.
+
+우리는 모든 ts 파일을 `src` 폴더에 넣고 변환되는 `js` 및 `html`, `css` 파일은 `public`에 넣을 것이다.
+
+따라서 `tsconfig.json`의 `"rootdir"`와 `"outDir"`를 아래와 같이 바꿔주면 된다.
+
+```json
+{
+  "compilerOptions": {
+  ...
+    "rootDir": "./src",
+    "outDir": "./public"
+  ...
+  }
+}
+```
+
+그런 다음 `tsc`를 실행하면 `src` 폴더의 모든 ts 파일을 변환하여 `public` 에 저장한다.
+
+그런데 여기서 문제가 있다.
+
+`src` 바깥에서 ts 파일을 생성해도 자동으로 변환된다.
+
+이럴 때는 include를 사용할 수 있다.
+
+```json
+{
+  "compilerOptions": {
+    ...
+  },
+  "include": [
+    "src"
+  ]
+}
+```
+
+그러면 src 폴더 이외의 ts 파일은 변환하여 저장하지 않는다.
+
+
+---
+
+참고
+
+- [TypeScript Tutorial by The Net Ninja](https://youtube.com/playlist?list=PL4cUxeGkcC9gUgr39Q_yD6v-bSyMwKPUI)
+- [TypeScript Docs](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)
