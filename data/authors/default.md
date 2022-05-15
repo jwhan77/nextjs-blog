@@ -5,7 +5,7 @@ occupation: Software Engineer
 company: 
 email: address@yoursite.com
 twitter: https://twitter.com/hellojadev
-linkedin: https://www.linkedin.com/jungwonhan
+linkedin: https://www.linkedin.com/in/jungwonhan
 github: https://github.com/jwhan77
 ---
 
