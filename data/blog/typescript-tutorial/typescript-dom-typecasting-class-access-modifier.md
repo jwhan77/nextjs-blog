@@ -1,6 +1,6 @@
 ---
 title: TypeScript 공부 - DOM과 타입캐스팅, 클래스, 접근 수식어 (Access Modifier)
-date: '2022-05-16'
+date: '2022-05-17'
 tags: ['100DaysOfCode', 'TypeScript']
 draft: false
 summary: '[Day 21] 타입스크립트에서 DOM 조작하는 법과 클래스 및 접근 수식어에 대해 배워보자'
